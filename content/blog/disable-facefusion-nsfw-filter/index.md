@@ -171,3 +171,34 @@ This is the kind of modification I would keep as a local research patch, not som
 That records the two source changes for my local experiments. The boundaries above still apply: no illegal or non-consensual use, or sexual content involving anyone under 18.
 
 {{% /steps %}}
+
+note 1 : Open `preview.py` from PowerShell using this command:
+notepad "C:\pinokio\api\facefusion-pinokio.git\facefusion\facefusion\uis\components\preview.py"
+
+
+3. In Notepad:
+- Press Ctrl + F.
+- Search for `if analyse_frame(target_vision_frame[:, :, :3]):`.
+- Delete only the entire blur-related block that I pointed out earlier.
+- Press Ctrl + S.
+- If a permissions warning appears, or a notification that the file has been modified, do not overwrite it just yet; let me know what message appears.
+4. Without launching FaceFusion, return to PowerShell and run:
+Select-String -Path "C:\pinokio\api\facefusion-pinokio.git\facefusion\facefusion\uis\components\preview.py" -Pattern "if analyse_frame\(target_vision_frame"
+
+
+If it returns no lines, the change has been successfully saved.
+To prevent FaceFusion from detecting and replacing the original files upon startup, you need to modify `run.py`;It is located here.pinokio\api\facefusion-pinokio.git\facefusion\facefusion\uis\components .... otherwise, any changes you make are overwritten when the program launches, as it restores the original files. Here is how to do it:Remove this entire block
+
+			{
+				method: 'shell.run',
+				params:
+				{
+					message: 'git checkout --quiet -- facefusion',
+					path: 'facefusion'
+				}
+			},
+
+
+
+From the first { to the last }, including the trailing comma.
+note 2 . That unlocks the visual filter and preview, but when I try to access an NSFW video, it only analyzes it without fully processing it; however, it completes the entire process for regular videos. If anyone could help with this, that would be great.
